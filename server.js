@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const app_1 = __importDefault(require("firebase/app"));
 require("firebase/database");
+var cors = require("cors");
 const app = (0, express_1.default)();
 const PORT = process.env.PORT || 3000;
 const firebaseConfig = {
@@ -20,7 +21,7 @@ const firebaseConfig = {
 const apiIni = app_1.default.initializeApp(firebaseConfig);
 const firebaseDB = app_1.default.database();
 // Middleware для роботи з JSON
-app.use(express_1.default.json());
+app.use(cors());
 // Роут для зберігання даних у Firebase
 app.post("/api/markers", async (req, res) => {
     try {

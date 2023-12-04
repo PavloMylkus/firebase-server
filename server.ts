@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import firebase from "firebase/app";
 import "firebase/database";
+var cors = require("cors");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -18,8 +19,9 @@ const firebaseConfig = {
 const apiIni = firebase.initializeApp(firebaseConfig);
 
 const firebaseDB = firebase.database();
+
 // Middleware для роботи з JSON
-app.use(express.json());
+app.use(cors());
 
 // Роут для зберігання даних у Firebase
 app.post("/api/markers", async (req: Request, res: Response) => {
