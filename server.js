@@ -43,6 +43,7 @@ app.post("/api/markers", async (req, res) => {
         return res.status(500).send("Error saving marker");
     }
 });
+
 // Слухання запитів на вказаному порті
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

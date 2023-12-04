@@ -43,6 +43,18 @@ app.post("/api/markers", async (req: Request, res: Response) => {
   }
 });
 
+app.get("/api/markers", async (req: Request, res: Response) => {
+  try {
+    // Отримання даних з бази даних Firebase, де містяться markers
+    const markersSnapshot = await firebaseDB.ref("markers").once("value");
+    const markers = markersSnapshot.val(); // Отримання значень
+
+    return res.status(200).json(markers); // Повернення значень у відповідь
+  } catch (error) {
+    console.error("Error fetching markers:", error);
+    return res.status(500).send("Error fetching markers");
+  }
+});
 // Слухання запитів на вказаному порті
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
