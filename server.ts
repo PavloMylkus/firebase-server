@@ -21,6 +21,7 @@ const apiIni = firebase.initializeApp(firebaseConfig);
 const firebaseDB = firebase.database();
 
 // Middleware для роботи з JSON
+app.use(express.json());
 app.use(cors());
 
 // Роут для зберігання даних у Firebase
