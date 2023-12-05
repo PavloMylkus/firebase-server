@@ -20,11 +20,9 @@ const apiIni = firebase.initializeApp(firebaseConfig);
 
 const firebaseDB = firebase.database();
 
-// Middleware для роботи з JSON
 app.use(express.json());
 app.use(cors());
 
-// Роут для зберігання даних у Firebase
 app.post("/api/markers", async (req: Request, res: Response) => {
   try {
     const { location, timestamp, label } = req.body;
@@ -50,17 +48,26 @@ app.post("/api/markers", async (req: Request, res: Response) => {
 
 app.get("/api/markers", async (req: Request, res: Response) => {
   try {
-    // Отримання даних з бази даних Firebase, де містяться markers
     const markersSnapshot = await firebaseDB.ref("markers").once("value");
     const markers = markersSnapshot.val(); // Отримання значень
 
-    return res.status(200).json(markers); // Повернення значень у відповідь
+    return res.status(200).json(markers);
   } catch (error) {
     console.error("Error fetching markers:", error);
     return res.status(500).send("Error fetching markers");
   }
 });
-// Слухання запитів на вказаному порті
+
+app.delete("/api/markers", async (req: Request, res: Response) => {
+  try {
+    await firebaseDB.ref("markers").remove();
+    return res.status(200).send("All markers deleted successfully");
+  } catch (error) {
+    console.error("Error deleting markers:", error);
+    return res.status(500).send("Error deleting markers");
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
