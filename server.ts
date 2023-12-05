@@ -27,19 +27,21 @@ app.use(cors());
 // Роут для зберігання даних у Firebase
 app.post("/api/markers", async (req: Request, res: Response) => {
   try {
-    const { lat, lng, label } = req.body;
-    if (!lat || !lng || !label) {
+    const { location, timestamp, label } = req.body;
+    if (!location.lat || !location.lng || !label || !timestamp) {
       return res.status(400).send("Invalid data provided");
     }
 
-    firebaseDB.ref(`markers/Quest-${label}`).set({ lat, lng }, (error: any) => {
-      if (error) {
-        console.error("Error saving marker:", error);
-        return res.status(500).send("Error saving marker");
-      } else {
-        return res.status(200).send("Marker saved successfully");
-      }
-    });
+    firebaseDB
+      .ref(`markers/Quest-${label}`)
+      .set({ location, timestamp }, (error: any) => {
+        if (error) {
+          console.error("Error saving marker:", error);
+          return res.status(500).send("Error saving marker");
+        } else {
+          return res.status(200).send("Marker saved successfully");
+        }
+      });
   } catch (error) {
     console.error("Error saving marker:", error);
     return res.status(500).send("Error saving marker");
